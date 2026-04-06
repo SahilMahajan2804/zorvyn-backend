@@ -15,28 +15,19 @@ public class UserController {
 
     private final UserService userService;
 
-    /**
-     * GET /api/users
-     * ADMIN only — list all active users.
-     */
+
     @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    /**
-     * GET /api/users/{id}
-     * ADMIN only — get a single user.
-     */
+
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    /**
-     * PATCH /api/users/{id}
-     * ADMIN only — update role and/or active status.
-     */
+
     @PatchMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(
             @PathVariable Long id,
@@ -44,19 +35,13 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, req));
     }
 
-    /**
-     * PATCH /api/users/{id}/toggle-active
-     * ADMIN only — toggle user active status.
-     */
+
     @PatchMapping("/{id}/toggle-active")
     public ResponseEntity<UserResponse> toggleUserActive(@PathVariable Long id) {
         return ResponseEntity.ok(userService.toggleUserActive(id));
     }
 
-    /**
-     * DELETE /api/users/{id}
-     * ADMIN only — soft-delete a user.
-     */
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

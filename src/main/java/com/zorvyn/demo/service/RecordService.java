@@ -21,7 +21,6 @@ public class RecordService {
     private final FinancialRecordRepository recordRepository;
     private final UserRepository            userRepository;
 
-    // ── CREATE (ADMIN only) ───────────────────────────────────────────────────
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
@@ -49,7 +48,6 @@ public class RecordService {
         return toDto(recordRepository.save(record));
     }
 
-    // ── READ ALL (all roles) — plain list with optional filters ───────────────
 
     public List<RecordDto> getAllRecords(RecordFilter filter, Authentication auth) {
         Long scopedUserId = resolveUserId(auth, filter.getUserId());
@@ -63,7 +61,6 @@ public class RecordService {
                 .collect(Collectors.toList());
     }
 
-    // ── READ ONE (all roles — Viewer sees own only) ───────────────────────────
 
     public RecordDto getRecordById(Long id, Authentication auth) {
         FinancialRecord r = findActive(id);
@@ -80,7 +77,6 @@ public class RecordService {
         return toDto(r);
     }
 
-    // ── UPDATE (ADMIN only) ───────────────────────────────────────────────────
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
@@ -96,7 +92,6 @@ public class RecordService {
         return toDto(recordRepository.save(record));
     }
 
-    // ── DELETE (ADMIN only, soft) ─────────────────────────────────────────────
 
     @Transactional
     @PreAuthorize("hasRole('ADMIN')")
@@ -106,9 +101,6 @@ public class RecordService {
         recordRepository.save(record);
     }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
-
-    /** Viewers are always locked to their own userId; others use the requested value. */
     Long resolveUserId(Authentication auth, Long requestedUserId) {
         if (auth != null && isViewer(auth)) {
             return userRepository.findByEmailAndDeletedAtIsNull(auth.getName())

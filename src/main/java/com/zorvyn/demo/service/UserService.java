@@ -64,7 +64,6 @@ public class UserService {
         userRepository.save(user);
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
 
     private User findActiveUser(Long id) {
         return userRepository.findById(id)

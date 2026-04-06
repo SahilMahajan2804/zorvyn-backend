@@ -5,8 +5,6 @@ import lombok.*;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class UpdateUserRequest {
-    /** Optional — pass to change role. */
     private Role role;
-    /** Optional — pass to change active status. */
     private Boolean active;
 }

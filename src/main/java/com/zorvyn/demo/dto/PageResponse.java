@@ -24,9 +24,7 @@ public class PageResponse<T> {
     private boolean first;     // is this the first page?
     private boolean last;      // is this the last page?
 
-    /**
-     * Static factory — wrap any Spring {@link Page} instance.
-     */
+
     public static <T> PageResponse<T> of(Page<T> springPage) {
         return PageResponse.<T>builder()
                 .content(springPage.getContent())

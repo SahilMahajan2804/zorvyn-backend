@@ -30,7 +30,6 @@ class DemoApplicationTests {
     @Autowired UserRepository userRepository;
     @Autowired PasswordEncoder passwordEncoder;
 
-    // ── Helper: register + login, return token ───────────────────────────────
 
     private String registerAndLogin(String email, String password, Role role) throws Exception {
         // Create user directly in DB for exact role control
@@ -55,9 +54,6 @@ class DemoApplicationTests {
         return auth.getToken();
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // Auth Tests
-    // ══════════════════════════════════════════════════════════════════════════
 
     @Test
     void register_success() throws Exception {
@@ -107,9 +103,6 @@ class DemoApplicationTests {
                 .andExpect(status().isUnauthorized());
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // Records Tests
-    // ══════════════════════════════════════════════════════════════════════════
 
     @Test
     void createRecord_asAdmin_success() throws Exception {
@@ -179,9 +172,6 @@ class DemoApplicationTests {
                 .andExpect(status().isForbidden());
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // Dashboard Tests
-    // ══════════════════════════════════════════════════════════════════════════
 
     @Test
     void dashboard_summary_asViewer_success() throws Exception {
@@ -210,9 +200,6 @@ class DemoApplicationTests {
                 .andExpect(jsonPath("$").isArray());
     }
 
-    // ══════════════════════════════════════════════════════════════════════════
-    // User Management Tests
-    // ══════════════════════════════════════════════════════════════════════════
 
     @Test
     void listUsers_asAdmin_success() throws Exception {

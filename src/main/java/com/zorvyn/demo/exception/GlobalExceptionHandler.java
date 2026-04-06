@@ -14,7 +14,6 @@ import java.util.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // ── Structured error body ────────────────────────────────────────────────
 
     private Map<String, Object> body(int status, String error, String message, String path) {
         Map<String, Object> b = new LinkedHashMap<>();
@@ -26,7 +25,6 @@ public class GlobalExceptionHandler {
         return b;
     }
 
-    // ── 400 Validation ───────────────────────────────────────────────────────
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidation(
@@ -69,7 +67,6 @@ public class GlobalExceptionHandler {
                         "You don't have permission to access this resource", req.getRequestURI()));
     }
 
-    // ── 404 Not Found ────────────────────────────────────────────────────────
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(
@@ -78,7 +75,6 @@ public class GlobalExceptionHandler {
                 .body(body(404, "Not Found", ex.getMessage(), req.getRequestURI()));
     }
 
-    // ── 409 Conflict ─────────────────────────────────────────────────────────
 
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<Map<String, Object>> handleConflict(
@@ -87,7 +83,6 @@ public class GlobalExceptionHandler {
                 .body(body(409, "Conflict", ex.getMessage(), req.getRequestURI()));
     }
 
-    // ── 500 Generic ──────────────────────────────────────────────────────────
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(

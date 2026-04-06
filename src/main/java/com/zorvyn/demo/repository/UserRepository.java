@@ -11,6 +11,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
-    /** List all non-deleted users. */
     java.util.List<User> findAllByDeletedAtIsNull();
 }

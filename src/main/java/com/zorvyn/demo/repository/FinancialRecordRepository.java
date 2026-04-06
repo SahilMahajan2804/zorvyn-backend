@@ -14,8 +14,6 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
 
     Optional<FinancialRecord> findByIdAndDeletedAtIsNull(Long id);
 
-    // ── Filtered list query ───────────────────────────────────────────────────
-    // All filter params are optional — passing null means "no filter on that field"
     @Query("SELECT r FROM FinancialRecord r " +
            "WHERE r.deletedAt IS NULL " +
            "AND (:userId   IS NULL OR r.user.id   = :userId) " +
@@ -31,7 +29,6 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
             @Param("from")     LocalDate from,
             @Param("to")       LocalDate to);
 
-    // ── Recent (10 most recent per user scope) ────────────────────────────────
     @Query("SELECT r FROM FinancialRecord r " +
            "WHERE r.deletedAt IS NULL " +
            "AND (:userId IS NULL OR r.user.id = :userId) " +
@@ -39,22 +36,18 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
     List<FinancialRecord> findRecentFiltered(@Param("userId") Long userId,
                                              org.springframework.data.domain.Pageable pageable);
 
-    // ── Dashboard aggregates ──────────────────────────────────────────────────
 
-    /** Total amount grouped by type (INCOME / EXPENSE), scoped to userId. */
     @Query("SELECT r.type, SUM(r.amount) FROM FinancialRecord r " +
            "WHERE r.deletedAt IS NULL AND (:userId IS NULL OR r.user.id = :userId) " +
            "GROUP BY r.type")
     List<Object[]> sumByType(@Param("userId") Long userId);
 
-    /** Category-wise totals, scoped to userId. */
     @Query("SELECT r.category, r.type, SUM(r.amount) " +
            "FROM FinancialRecord r " +
            "WHERE r.deletedAt IS NULL AND (:userId IS NULL OR r.user.id = :userId) " +
            "GROUP BY r.category, r.type ORDER BY r.category")
     List<Object[]> sumByCategoryAndType(@Param("userId") Long userId);
 
-    /** Monthly totals for a given date range, scoped to userId. */
     @Query("SELECT YEAR(r.date), MONTH(r.date), r.type, SUM(r.amount) " +
            "FROM FinancialRecord r " +
            "WHERE r.deletedAt IS NULL AND (:userId IS NULL OR r.user.id = :userId) " +

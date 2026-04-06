@@ -18,10 +18,7 @@ public class DashboardController {
     private final DashboardService dashboardService;
     private final RecordService recordService;
 
-    /**
-     * GET /api/dashboard/summary
-     * All roles — total income, expense, net balance, record count.
-     */
+
     @GetMapping("/summary")
     public ResponseEntity<SummaryResponse> getSummary(
             @RequestParam(required = false) Long userId,
@@ -29,10 +26,7 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getSummary(userId, auth));
     }
 
-    /**
-     * GET /api/dashboard/categories
-     * ANALYST, ADMIN — category-wise income/expense totals.
-     */
+
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryTotal>> getCategories(
             @RequestParam(required = false) Long userId,
@@ -40,10 +34,7 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getCategoryTotals(userId, auth));
     }
 
-    /**
-     * GET /api/dashboard/trends
-     * ANALYST, ADMIN — monthly totals for last 12 months.
-     */
+
     @GetMapping("/trends")
     public ResponseEntity<List<MonthlyTrend>> getTrends(
             @RequestParam(required = false) Long userId,
@@ -51,10 +42,7 @@ public class DashboardController {
         return ResponseEntity.ok(dashboardService.getMonthlyTrends(userId, auth));
     }
 
-    /**
-     * GET /api/dashboard/recent
-     * All roles — 10 most recent records.
-     */
+
     @GetMapping("/recent")
     public ResponseEntity<List<RecordDto>> getRecent(
             @RequestParam(required = false) Long userId,

@@ -20,7 +20,6 @@ public class DashboardService {
     private final FinancialRecordRepository recordRepository;
     private final com.zorvyn.demo.repository.UserRepository userRepository;
 
-    // ── Helper for User Scoping ──────────────────────────────────────────────
     private Long resolveUserId(Authentication auth, Long requestedUserId) {
         if (auth == null) return requestedUserId;
         boolean isViewer = auth.getAuthorities().stream()
@@ -31,10 +30,10 @@ public class DashboardService {
                     .map(com.zorvyn.demo.entity.User::getId)
                     .orElseThrow(() -> new RuntimeException("User not found"));
         }
-        return requestedUserId; // Analyst or Admin can pass null for all, or specific userId
+        return requestedUserId;
     }
 
-    // ── Summary (all roles) ──────────────────────────────────────────────────
+
 
     public SummaryResponse getSummary(Long targetUserId, Authentication auth) {
         Long resolvedUserId = resolveUserId(auth, targetUserId);
@@ -60,7 +59,6 @@ public class DashboardService {
                 .build();
     }
 
-    // ── Category totals (ANALYST, ADMIN) ────────────────────────────────────
 
     @PreAuthorize("hasAnyRole('ANALYST','ADMIN')")
     public List<CategoryTotal> getCategoryTotals(Long targetUserId, Authentication auth) {
@@ -75,7 +73,7 @@ public class DashboardService {
                 .collect(Collectors.toList());
     }
 
-    // ── Monthly trends — last 12 months (ANALYST, ADMIN) ────────────────────
+
 
     @PreAuthorize("hasAnyRole('ANALYST','ADMIN')")
     public List<MonthlyTrend> getMonthlyTrends(Long targetUserId, Authentication auth) {
@@ -94,7 +92,6 @@ public class DashboardService {
                 .collect(Collectors.toList());
     }
 
-    // ── Recent activity (all roles) ──────────────────────────────────────────
 
     public List<RecordDto> getRecentActivity(RecordService recordService, Long targetUserId, Authentication auth) {
         Long resolvedUserId = resolveUserId(auth, targetUserId);

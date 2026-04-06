@@ -21,16 +21,13 @@ public class JwtUtil {
     @Value("${app.jwt.expiration-ms}")
     private long expirationMs;
 
-    // ── Key ─────────────────────────────────────────────────────────────────
 
     private SecretKey signingKey() {
-        // Pad or hash the secret to ensure it is 256-bit for HS256
         byte[] keyBytes = secret.getBytes();
-        // Use HMAC-SHA key builder from JJWT (handles key length automatically)
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // ── Generation ──────────────────────────────────────────────────────────
+
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -47,7 +44,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // ── Extraction ──────────────────────────────────────────────────────────
+
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -65,7 +62,7 @@ public class JwtUtil {
                 .getPayload();
     }
 
-    // ── Validation ──────────────────────────────────────────────────────────
+
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
